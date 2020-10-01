@@ -90,20 +90,17 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        # add elements to the table
-        self.count += 1
-        item = HashTableEntry(key, value)
-        hash = self.djb2(key)
+        index = self.hash_index(key)
+        hte = HashTableEntry(key, value)
+        item = self.slots[index]
 
-        
-        
-        
-        #print(self.slots[hash])
-        #print(f'element key', item.key[0])
-        #print(f'element value', item.value[0])
-        #print(f'element hash value', hash)
-
-        
+        if item is not None:
+            self.slots[index] = hte
+            self.slots[index].next = item
+        else:
+            self.slots[index] = hte
+            self.count += 1
+            
         
 
 
@@ -116,6 +113,7 @@ class HashTable:
         Implement this.
         """
         # Your code here
+    
 
 
     def get(self, key):
@@ -127,12 +125,17 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        hash = self.djb2(key) # compute the hash for the key
-        while self.slots[hash] is not None:
-            if self.slots[hash].key is key:
-                return self.slots[hash].value
-            hash = (hash + 1) % self.capacity
-        return None
+        index = self.hash_index(key)
+        item = self.slots[index]
+
+        if item is not None:
+            while item is not None:
+                if item.key == key:
+                    return item.value
+
+                item = item.next
+        if not item:
+            return None
 
 
     def resize(self, new_capacity):
