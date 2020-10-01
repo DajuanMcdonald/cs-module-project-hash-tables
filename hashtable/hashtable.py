@@ -113,6 +113,30 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        index = self.hash_index(key)
+        hash_key = self.djb2(key)
+
+        current_item = self.slots[index]
+        prev_item = None
+
+        if current_item is not None:
+            if current_item.next == None:
+                self.count -= 1
+                self.slots[index] = None
+                return
+
+            while current_item is not None:
+                if current_item.key == key:
+                    self.count -= 1
+                    prev_item.next = current_item
+                    current_item = None
+
+                    return
+                
+                prev_item = current_item
+                current_item = current_item.next
+
+            print(f'{key} is found')
     
 
 
