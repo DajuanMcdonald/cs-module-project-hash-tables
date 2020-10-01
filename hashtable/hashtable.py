@@ -67,6 +67,10 @@ class HashTable:
         Implement this, and/or FNV-1.
         """
         # Your code here
+        hash = 5381
+        for idx, c in enumerate(key):
+            hash += (hash * 33) + ord(c)
+        return hash % self.capacity
 
 
     def hash_index(self, key):
@@ -86,6 +90,20 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        # add elements to the table
+        self.count += 1
+        item = HashTableEntry(key, value)
+        hash = self.djb2(key)
+
+        
+        
+        
+        #print(self.slots[hash])
+        #print(f'element key', item.key[0])
+        #print(f'element value', item.value[0])
+        #print(f'element hash value', hash)
+
+        
         
 
 
@@ -109,6 +127,12 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        hash = self.djb2(key) # compute the hash for the key
+        while self.slots[hash] is not None:
+            if self.slots[hash].key is key:
+                return self.slots[hash].value
+            hash = (hash + 1) % self.capacity
+        return None
 
 
     def resize(self, new_capacity):
