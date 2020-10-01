@@ -139,7 +139,7 @@ class TestHashTable(unittest.TestCase):
         return_value = ht.get("key-3")
         self.assertTrue(return_value is None)
         return_value = ht.get("key-4")
-        self.assertTrue(return_value is None)
+        self.assertTrue(return_value  is None)
         return_value = ht.get("key-5")
         self.assertTrue(return_value is None)
         return_value = ht.get("key-6")

@@ -114,7 +114,6 @@ class HashTable:
         """
         # Your code here
         index = self.hash_index(key)
-        hash_key = self.djb2(key)
 
         current_item = self.slots[index]
         prev_item = None
@@ -128,7 +127,7 @@ class HashTable:
             while current_item is not None:
                 if current_item.key == key:
                     self.count -= 1
-                    prev_item.next = current_item
+                    prev_item.next = current_item.next
                     current_item = None
 
                     return
