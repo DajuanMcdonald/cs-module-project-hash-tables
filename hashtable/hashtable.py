@@ -48,6 +48,7 @@ class HashTable:
         Implement this.
         """
         # Your code here
+      
 
 
     def fnv1(self, key):
@@ -135,7 +136,7 @@ class HashTable:
                 prev_item = current_item
                 current_item = current_item.next
 
-            print(f'{key} is found')
+            print(f'Key not found')
     
 
 
@@ -169,7 +170,22 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        old_capacity = self.slots
 
+        # compute the new hash
+        self.slots = new_capacity
+        self.slots = [None] * new_capacity
+
+        # iterate to each node and add new hash
+        #we need and old capacity
+        for i in old_capacity:
+            if i:
+                current_i = i
+                while current_i:
+                    self.put(current_i.key, current_i.value)
+                    current_i = current_i.next
+
+                    
 
 
 if __name__ == "__main__":
