@@ -22,6 +22,9 @@ class HashTable:
 
     def __init__(self, capacity):
         # Your code here
+        self.capacity = MIN_CAPACITY
+        self.slots = [None for i in range(self.capacity)]
+        self.count = 0
 
 
     def get_num_slots(self):
@@ -35,6 +38,7 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        return self.capacity
 
 
     def get_load_factor(self):
@@ -44,6 +48,7 @@ class HashTable:
         Implement this.
         """
         # Your code here
+      
 
 
     def fnv1(self, key):
@@ -63,6 +68,10 @@ class HashTable:
         Implement this, and/or FNV-1.
         """
         # Your code here
+        hash = 5381
+        for idx, c in enumerate(key):
+            hash += (hash * 33) + ord(c)
+        return hash % self.capacity
 
 
     def hash_index(self, key):
@@ -82,6 +91,18 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        index = self.hash_index(key)
+        hte = HashTableEntry(key, value)
+        item = self.slots[index]
+
+        if item is not None:
+            self.slots[index] = hte
+            self.slots[index].next = item
+        else:
+            self.slots[index] = hte
+            self.count += 1
+            
+        
 
 
     def delete(self, key):
@@ -93,6 +114,30 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        index = self.hash_index(key)
+
+        current_item = self.slots[index]
+        prev_item = None
+
+        if current_item is not None:
+            if current_item.next == None:
+                self.count -= 1
+                self.slots[index] = None
+                return
+
+            while current_item is not None:
+                if current_item.key == key:
+                    self.count -= 1
+                    prev_item.next = current_item.next
+                    current_item = None
+
+                    return
+                
+                prev_item = current_item
+                current_item = current_item.next
+
+            print(f'Key not found')
+    
 
 
     def get(self, key):
@@ -104,6 +149,17 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        index = self.hash_index(key)
+        item = self.slots[index]
+
+        if item is not None:
+            while item is not None:
+                if item.key == key:
+                    return item.value
+
+                item = item.next
+        if not item:
+            return None
 
 
     def resize(self, new_capacity):
@@ -114,7 +170,22 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        old_capacity = self.slots
 
+        # compute the new hash
+        self.slots = new_capacity
+        self.slots = [None] * new_capacity
+
+        # iterate to each node and add new hash
+        #we need and old capacity
+        for i in old_capacity:
+            if i:
+                current_i = i
+                while current_i:
+                    self.put(current_i.key, current_i.value)
+                    current_i = current_i.next
+
+                    
 
 
 if __name__ == "__main__":
